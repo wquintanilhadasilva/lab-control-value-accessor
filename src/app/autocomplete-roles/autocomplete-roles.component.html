@@ -1,0 +1,15 @@
+<app-autocomplete-base
+  [form]="formControl"
+  [optionItemTemplate]="optionHtml"
+  [labelText]="'Roles'"
+  [dataList]="data"
+  (filterChange)="filter($event)"
+  (selectItem)="emitsChosenOption($event)"
+  [displayWithFn]="displayFn">
+
+  <ng-template #optionHtml let-option="item" let-idx="index">
+    {{option.name}} : {{option.id}} : {{idx}}
+    <hr>
+  </ng-template>
+
+</app-autocomplete-base>

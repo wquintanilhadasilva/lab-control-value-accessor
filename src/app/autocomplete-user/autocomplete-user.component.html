@@ -1,0 +1,17 @@
+<mat-form-field>
+  <mat-label>Usuários</mat-label>
+  <input type="text"
+          placeholder="Começe a digitar..."
+          matInput
+          [formControl]="myControl"
+          [matAutocomplete]="auto">
+          <button mat-button *ngIf="myControl.value" matSuffix mat-icon-button aria-label="Clear" (click)="myControl.setValue('')">
+          <mat-icon>close</mat-icon>
+        </button>
+  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="_emitsChosenOption($event.option.value)">
+    <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+      {{option.name}}
+      <!-- <div [innerHTML]="boldMachingChars: option.name | safeHtml"></div> -->
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>

@@ -1,0 +1,28 @@
+<mat-form-field>
+  <mat-label>{{labelText}}</mat-label>
+  <input type="text"
+          placeholder="Começe a digitar..."
+          matInput
+          [formControl]="form"
+          [matAutocomplete]="auto"
+          (focusout)="focusOut()"
+          (focus)="focusIn()">
+          <button mat-button *ngIf="form.value" matSuffix mat-icon-button aria-label="Clear" (click)="form.setValue('')">
+          <mat-icon>close</mat-icon>
+        </button>
+  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayWithFn" (optionSelected)="_emitsChosenOption($event.option.value)">
+    <mat-option *ngFor="let option of dataList | async; index as i;" [value]="option">
+      <ng-container *ngTemplateOutlet="getOptionItemTemplate();context:{item: option, index: i}">
+      </ng-container>
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>
+
+
+<ng-template #noOptonItemRefTemplate>
+  <div class="row">
+    <div class="col-12">
+      <span class="text-center text-danger">HTML template reference not set in [optionItemTemplate] attribute!</span>
+    </div>
+  </div>
+</ng-template>

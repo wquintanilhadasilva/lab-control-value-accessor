@@ -72,7 +72,7 @@
       </mat-form-field>
     </div>
     <div fxFlex="33">
-      <mat-form-field appearance="{{appearance}}">
+      <mat-form-field appearance="{{appearance}}" *ngIf="showType">
         <mat-label>Tipo de Endereço</mat-label>
         <mat-select formControlName="type">
           <mat-option *ngFor="let t of addressType" [value]="t.value">

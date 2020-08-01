@@ -1,21 +1,3 @@
-<!-- <form #form="ngForm">
-  <p>ngModel value: {{outerCounterValue}}</p>
-  <p>
-    <app-custom-combobox name="counter" ngModel></app-custom-combobox>
-  </p>
-</form>
-<form #form2="ngForm">
-  <p>ngModel value: {{outerCounterValue}}</p>
-  <p>
-    <app-custom-combobox name="counter" [ngModel]="outerCounterValue"></app-custom-combobox>
-  </p>
-</form>
-<form #form3="ngForm">
-  <p>ngModel value: {{outerCounterValue}}</p>
-  <p>
-    <app-custom-combobox name="counter" [(ngModel)]="outerCounterValue"></app-custom-combobox>
-  </p>
-</form> -->
 <div class="body">
   <form [formGroup]="form" (ngSubmit)="onSubmit()" >
     <p>

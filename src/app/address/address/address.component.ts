@@ -45,6 +45,9 @@ export class AddressComponent implements ControlValueAccessor, Validator, OnDest
   @Input()
   appearance = 'fill';
 
+  @Input()
+  showType = true;
+
   address: Address;
 
   countries = [
@@ -146,11 +149,11 @@ export class AddressComponent implements ControlValueAccessor, Validator, OnDest
       state: [{value: this.address?.state, disabled: !this.editable}, Validators.required],
       city: [{value: this.address?.city, disabled: !this.editable}, Validators.required],
       place: [{value: this.address?.place, disabled: !this.editable}, Validators.required],
-      complement: [{value: this.address?.complement, disabled: !this.editable}, Validators.required],
+      complement: [{value: this.address?.complement, disabled: !this.editable}],
       number: [{value: this.address?.number, disabled: !this.editable}, Validators.required],
       district: [{value: this.address?.district, disabled: !this.editable}, Validators.required],
       zipcode: [{value: this.address?.zipcode, disabled: !this.editable}, Validators.required],
-      type: [{value: this.address?.type, disabled: !this.editable}, Validators.required],
+      type: [{value: this.address?.type, disabled: !this.editable}, this.showType ? Validators.required : Validators.nullValidator],
     });
 
   }

@@ -50,6 +50,8 @@ export class AddressComponent implements ControlValueAccessor, Validator, OnDest
 
   address: Address;
 
+  editing = false;
+
   countries = [
     {label: 'BRASIL', value: 'BR'},
     {label: 'MÉXICO', value: 'MX'}
@@ -97,13 +99,16 @@ export class AddressComponent implements ControlValueAccessor, Validator, OnDest
   private _onTouch: (value: any) => void;
 
   set value(val) {
+    this.editing = false;
     if (!val) {
       this.address = {};
       this._form.reset();
+      this.editing = true;
       return;
     }
     this.address = val;
     this._form.patchValue(val);
+    this.editing = true;
   }
 
   constructor(private _fb: FormBuilder) { }
@@ -161,8 +166,11 @@ export class AddressComponent implements ControlValueAccessor, Validator, OnDest
   private _setupObservables() {
     this._form.valueChanges.pipe(takeUntil(this._destroy$)).subscribe(value => {
       if (this._onChange) {
-        this.address = value;
-        this._onChange(value);
+        if (this.editing) {
+          this.address = value;
+          this._onChange(value);
+        }
+        this.editing = true;
       }
     });
   }

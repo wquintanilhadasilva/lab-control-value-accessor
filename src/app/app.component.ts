@@ -41,6 +41,9 @@ export class AppComponent implements OnInit{
     this.endereco.city = 'Goiânia';
     this.endereco.complement = 'Complemento';
     this.endereco.district = 'District';
+    this.endereco.state = 'GO';
+    this.endereco.country = 'BR';
+    this.endereco.type = 'WORK';
 
     this.form = this.fb.group({
       counter: this.data.counter,

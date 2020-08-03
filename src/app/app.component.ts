@@ -43,7 +43,7 @@ export class AppComponent implements OnInit{
     this.endereco.district = 'District';
     this.endereco.state = 'GO';
     this.endereco.country = 'BR';
-    this.endereco.type = 'WORK';
+    // this.endereco.type = 'WORK';
 
     this.form = this.fb.group({
       counter: this.data.counter,
@@ -51,7 +51,7 @@ export class AppComponent implements OnInit{
       user2: [this.data2.user, Validators.required],
       roles: [this.role, Validators.required],
       roles2: [null, Validators.required],
-      address: [this.endereco],
+      address: [this.endereco, Validators.required],
     });
 
   }

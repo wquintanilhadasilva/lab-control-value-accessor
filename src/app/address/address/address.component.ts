@@ -1,5 +1,6 @@
+// tslint:disable: max-line-length
 // tslint:disable: variable-name
-import { Component, OnInit, OnDestroy, forwardRef, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, forwardRef, Input, EventEmitter, Output } from '@angular/core';
 import {
   FormGroup,
   FormBuilder,
@@ -47,6 +48,21 @@ export class AddressComponent implements ControlValueAccessor, Validator, OnDest
 
   @Input()
   showType = true;
+
+  @Input()
+  required = true;
+
+  @Output()
+  countrySelected: EventEmitter<any> = new EventEmitter();
+
+  @Output()
+  stateSelected: EventEmitter<any> = new EventEmitter();
+
+  @Output()
+  citySelected: EventEmitter<any> = new EventEmitter();
+
+  @Output()
+  typeSelected: EventEmitter<any> = new EventEmitter();
 
   address: Address;
 
@@ -99,7 +115,6 @@ export class AddressComponent implements ControlValueAccessor, Validator, OnDest
   private _onTouch: (value: any) => void;
 
   set value(val) {
-    this.editing = false;
     if (!val) {
       this.address = {};
       this._form.reset();
@@ -126,6 +141,7 @@ export class AddressComponent implements ControlValueAccessor, Validator, OnDest
   }
 
   writeValue(val: Address | null | undefined): void {
+    this.editing = false;
     this.value = val;
   }
 
@@ -150,17 +166,32 @@ export class AddressComponent implements ControlValueAccessor, Validator, OnDest
 
   private _createFormGroup() {
     this._form = this._fb.group({
-      country: [{value: this.address?.country, disabled: !this.editable}, Validators.required],
-      state: [{value: this.address?.state, disabled: !this.editable}, Validators.required],
-      city: [{value: this.address?.city, disabled: !this.editable}, Validators.required],
-      place: [{value: this.address?.place, disabled: !this.editable}, Validators.required],
+      country: [{value: this.address?.country, disabled: !this.editable}, this.required ? Validators.required : Validators.nullValidator],
+      state: [{value: this.address?.state, disabled: !this.editable}, this.required ? Validators.required : Validators.nullValidator],
+      city: [{value: this.address?.city, disabled: !this.editable}, this.required ? Validators.required : Validators.nullValidator],
+      place: [{value: this.address?.place, disabled: !this.editable}, this.required ? Validators.required : Validators.nullValidator],
       complement: [{value: this.address?.complement, disabled: !this.editable}],
-      number: [{value: this.address?.number, disabled: !this.editable}, Validators.required],
-      district: [{value: this.address?.district, disabled: !this.editable}, Validators.required],
-      zipcode: [{value: this.address?.zipcode, disabled: !this.editable}, Validators.required],
-      type: [{value: this.address?.type, disabled: !this.editable}, this.showType ? Validators.required : Validators.nullValidator],
+      number: [{value: this.address?.number, disabled: !this.editable}, this.required ? Validators.required : Validators.nullValidator],
+      district: [{value: this.address?.district, disabled: !this.editable}, this.required ? Validators.required : Validators.nullValidator],
+      zipcode: [{value: this.address?.zipcode, disabled: !this.editable}, this.required ? Validators.required : Validators.nullValidator],
+      type: [{value: this.address?.type, disabled: !this.editable}, this.showType && this.required ? Validators.required : Validators.nullValidator],
     });
 
+  }
+
+  onSelectCountry(value) {
+    // clear state and city
+    this.address.state = null;
+    this.address.city = null;
+    this.value = this.address;
+    this.countrySelected.emit(value);
+  }
+
+  onSelectState(value) {
+    // clear city
+    this.address.city = null;
+    this.value = this.address;
+    this.stateSelected.emit(value);
   }
 
   private _setupObservables() {

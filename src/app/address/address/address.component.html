@@ -4,8 +4,8 @@
     <div fxFlex="33">
       <mat-form-field appearance="{{appearance}}">
         <mat-label>País</mat-label>
-        <mat-select formControlName="country">
-          <mat-option *ngFor="let t of countries" [value]="t.value">
+        <mat-select formControlName="country" (selectionChange)="onSelectCountry($event.value)">
+          <mat-option *ngFor="let t of countries" [value]="t">
             {{t.label}}
           </mat-option>
         </mat-select>
@@ -15,8 +15,8 @@
     <div fxFlex="33">
       <mat-form-field appearance="{{appearance}}">
         <mat-label>Estado</mat-label>
-        <mat-select formControlName="state">
-          <mat-option *ngFor="let t of states" [value]="t.value">
+        <mat-select formControlName="state" (selectionChange)="onSelectState($event.value)">
+          <mat-option *ngFor="let t of states" [value]="t">
             {{t.label}}
           </mat-option>
         </mat-select>
@@ -74,8 +74,8 @@
     <div fxFlex="33">
       <mat-form-field appearance="{{appearance}}" *ngIf="showType">
         <mat-label>Tipo de Endereço</mat-label>
-        <mat-select formControlName="type">
-          <mat-option *ngFor="let t of addressType" [value]="t.value">
+        <mat-select formControlName="type" (selectionChange)="stateSelected.emit($event.value)">
+          <mat-option *ngFor="let t of addressType" [value]="t">
             {{t.label}}
           </mat-option>
         </mat-select>
@@ -86,4 +86,4 @@
 
 </form>
 <pre>{{ _form.value | json }}</pre>
-<pre>{{ _form.invalid | json }}</pre>
+<pre>inválid: {{ _form.invalid | json }}</pre>

@@ -5,7 +5,7 @@
       <mat-form-field appearance="{{appearance}}">
         <mat-label>País</mat-label>
         <mat-select formControlName="country" (selectionChange)="onSelectCountry($event.value)">
-          <mat-option *ngFor="let t of countries" [value]="t">
+          <mat-option *ngFor="let t of countries" [value]="t.value">
             {{t.label}}
           </mat-option>
         </mat-select>
@@ -16,7 +16,7 @@
       <mat-form-field appearance="{{appearance}}">
         <mat-label>Estado</mat-label>
         <mat-select formControlName="state" (selectionChange)="onSelectState($event.value)">
-          <mat-option *ngFor="let t of states" [value]="t">
+          <mat-option *ngFor="let t of states$ | async" [value]="t.value">
             {{t.label}}
           </mat-option>
         </mat-select>
@@ -75,7 +75,7 @@
       <mat-form-field appearance="{{appearance}}" *ngIf="showType">
         <mat-label>Tipo de Endereço</mat-label>
         <mat-select formControlName="type" (selectionChange)="stateSelected.emit($event.value)">
-          <mat-option *ngFor="let t of addressType" [value]="t">
+          <mat-option *ngFor="let t of addressType" [value]="t.value">
             {{t.label}}
           </mat-option>
         </mat-select>

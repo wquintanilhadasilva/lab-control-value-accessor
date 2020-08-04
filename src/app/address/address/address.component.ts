@@ -12,7 +12,7 @@ import {
   FormControl,
 } from '@angular/forms';
 
-import { Subject } from 'rxjs';
+import { Subject, Observable, BehaviorSubject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { Address } from '../../address';
@@ -47,7 +47,7 @@ export class AddressComponent implements ControlValueAccessor, Validator, OnDest
   appearance = 'fill';
 
   @Input()
-  showType = true;
+  showType = false;
 
   @Input()
   required = true;
@@ -63,6 +63,8 @@ export class AddressComponent implements ControlValueAccessor, Validator, OnDest
 
   @Output()
   typeSelected: EventEmitter<any> = new EventEmitter();
+
+  states_sub$: BehaviorSubject<{label: string, value: string}[]> = new BehaviorSubject([]);
 
   address: Address;
 
@@ -126,6 +128,10 @@ export class AddressComponent implements ControlValueAccessor, Validator, OnDest
     this.editing = true;
   }
 
+  get states$(): Observable<{label: string, value: string}[]> {
+    return this.states_sub$.asObservable();
+  }
+
   constructor(private _fb: FormBuilder) { }
 
   ngOnInit(): void {
@@ -141,8 +147,13 @@ export class AddressComponent implements ControlValueAccessor, Validator, OnDest
   }
 
   writeValue(val: Address | null | undefined): void {
+    console.log('write');
+    console.log(val);
     this.editing = false;
     this.value = val;
+    if (val?.country) {
+      this.loadState(val.country);
+    }
   }
 
   registerOnChange(fn: (v: Address | null | undefined) => void): void {
@@ -185,6 +196,7 @@ export class AddressComponent implements ControlValueAccessor, Validator, OnDest
     this.address.city = null;
     this.value = this.address;
     this.countrySelected.emit(value);
+    this.loadState(value);
   }
 
   onSelectState(value) {
@@ -204,6 +216,15 @@ export class AddressComponent implements ControlValueAccessor, Validator, OnDest
         this.editing = true;
       }
     });
+  }
+
+  private loadState(country: string): void {
+    console.log(country);
+    if (country === 'BR') {
+      this.states_sub$.next(this.states);
+    } else {
+      this.states_sub$.next([]);
+    }
   }
 
 }
